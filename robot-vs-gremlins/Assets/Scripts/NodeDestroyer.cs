@@ -12,11 +12,11 @@ public class NodeDestroyer : MonoBehaviour
             foreach( Collider i in colliders ){
                 if(i.gameObject.name == "Floor"){
                     Debug.Log("Destroyed");
+                    Destroy(this.GetComponent<MapGenerator>());
                     Destroy(this);
                     break;
                 }
             }
-            Destroy(this.GetComponent<MapGenerator>());
         }
     }
 }
