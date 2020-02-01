@@ -6,40 +6,39 @@ using UnityEngine;
 *   Spaghetti code warning
 */
 
-// To show a room without needing to be run
-[ExecuteInEditMode]
-
-public class RoomGenerator : MonoBehaviour
+public class RoomGenerator : ScriptableObject
 {
+
     public Vector3 roomSize;
     public float doorSize = 0;
-    public bool startRoom;
-    public bool endRoom;
+    public int num_rooms = 0;
+    public int longest_path = 0;
+    public GameObject node_prefab;
+
     public bool north_door;
     public bool east_door;
     public bool south_door;
     public bool west_door;
 
-    // Start is called before the first frame update
-    void Awake()
+    // Apologies for this big boye
+
+    public GameObject generateRoom(bool north_door, bool east_door, bool south_door, bool west_door, Vector3 roomSize, float doorSize, int num_rooms, GameObject node_prefab)
     {
-        foreach (Transform child in this.transform) {
-            GameObject.DestroyImmediate(child.gameObject);
-        }
+        GameObject toReturn = new GameObject();
 
-        if(startRoom){
-            north_door = true;
-            east_door = true;
-            south_door = true;
-            west_door = true;
-        }
-
+        node_prefab.GetComponent<MapGenerator>().node_prefab = node_prefab;
+        node_prefab.GetComponent<MapGenerator>().roomSize = roomSize;
+        node_prefab.GetComponent<MapGenerator>().doorSize = doorSize;
+        node_prefab.GetComponent<MapGenerator>().num_rooms = num_rooms-1;
+        node_prefab.GetComponent<MapGenerator>().longest_path = longest_path;
+        node_prefab.GetComponent<MapGenerator>().seeded = true;
+        
         // North
         if(north_door){
             // generate north "door"
             GameObject wall = new GameObject();
             wall.name = "North Door";
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
 
             var scale = new Vector3((roomSize.x-doorSize)/2.0f, roomSize.y, 1.0f);
 
@@ -54,6 +53,14 @@ public class RoomGenerator : MonoBehaviour
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3(-(roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),(float)(roomSize.z/2 - 0.5));
             w2.transform.SetParent(wall.transform);
+
+            // Generate a Node
+            GameObject node = Instantiate(node_prefab, new Vector3(0, 0, roomSize.z), Quaternion.identity);
+            node.name = "North Node";
+            node.tag = "North";
+            node.transform.SetParent(toReturn.transform);
+            node.GetComponent<BoxCollider>().size = roomSize;
+            node.AddComponent<NodeDestroyer>();
             
             // TODO: Create a door of some kind?
         } else {
@@ -63,14 +70,14 @@ public class RoomGenerator : MonoBehaviour
             wall.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1.0f);
             wall.transform.localPosition = new Vector3(0.0f,(float)(roomSize.y/2),(float)(roomSize.z/2 - 0.5));
 
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
         }
         // East
         if(east_door){
             // generate east "door"
             GameObject wall = new GameObject();
             wall.name = "East Door";
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
 
             var scale = new Vector3(1.0f, roomSize.y, (roomSize.z-doorSize)/2.0f);
 
@@ -85,6 +92,14 @@ public class RoomGenerator : MonoBehaviour
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3((float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),-(roomSize.z+doorSize)/4.0f);
             w2.transform.SetParent(wall.transform);
+
+            // Generate a Node
+            GameObject node = Instantiate(node_prefab, new Vector3(roomSize.x, 0, 0), Quaternion.identity);
+            node.name = "East Node";
+            node.tag = "East";
+            node.transform.SetParent(toReturn.transform);
+            node.GetComponent<BoxCollider>().size = roomSize;
+            node.AddComponent<NodeDestroyer>();
             
             // TODO: Create a door of some kind?
         } else {
@@ -94,14 +109,14 @@ public class RoomGenerator : MonoBehaviour
             wall.transform.localScale = new Vector3(1.0f, roomSize.y, roomSize.z);
             wall.transform.localPosition = new Vector3((float)(roomSize.x/2 - 0.5), (float)(roomSize.y/2), 0.0f);
 
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
         }
         // South
         if(south_door){
             // generate south "door"
             GameObject wall = new GameObject();
             wall.name = "South Door";
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
 
             var scale = new Vector3((roomSize.x-doorSize)/2.0f, roomSize.y, 1.0f);
 
@@ -116,6 +131,14 @@ public class RoomGenerator : MonoBehaviour
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3(-(roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),-(float)(roomSize.z/2 - 0.5));
             w2.transform.SetParent(wall.transform);
+
+            // Generate a Node
+            GameObject node = Instantiate(node_prefab, new Vector3(0, 0, -roomSize.z), Quaternion.identity);
+            node.name = "South Node";
+            node.tag = "South";
+            node.transform.SetParent(toReturn.transform);
+            node.GetComponent<BoxCollider>().size = roomSize;
+            node.AddComponent<NodeDestroyer>();
             
             // TODO: Create a door of some kind?
         } else {
@@ -125,14 +148,14 @@ public class RoomGenerator : MonoBehaviour
             wall.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1.0f);
             wall.transform.localPosition = new Vector3(0.0f,(float)(roomSize.y/2),-(float)(roomSize.z/2 - 0.5));
 
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
         }
         // West
         if(west_door){
             // generate west "door"
             GameObject wall = new GameObject();
             wall.name = "West Door";
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
 
             var scale = new Vector3(1.0f, roomSize.y, (roomSize.z-doorSize)/2.0f);
 
@@ -148,6 +171,14 @@ public class RoomGenerator : MonoBehaviour
             w2.transform.localPosition = new Vector3(-(float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),-(roomSize.z+doorSize)/4.0f);
             w2.transform.SetParent(wall.transform);
             
+            // Generate a Node
+            GameObject node = Instantiate(node_prefab, new Vector3(-roomSize.x, 0, 0), Quaternion.identity);
+            node.name = "West Node";
+            node.tag = "West";
+            node.transform.SetParent(toReturn.transform);
+            node.GetComponent<BoxCollider>().size = roomSize;
+            node.AddComponent<NodeDestroyer>();
+
             // TODO: Create a door of some kind?
         } else {
             // generate west "wall"
@@ -156,15 +187,19 @@ public class RoomGenerator : MonoBehaviour
             wall.transform.localScale = new Vector3(1.0f, roomSize.y, roomSize.z);
             wall.transform.localPosition = new Vector3(-(float)(roomSize.x/2 - 0.5), (float)(roomSize.y/2), 0.0f);
 
-            wall.transform.SetParent(this.transform);
+            wall.transform.SetParent(toReturn.transform);
         }
 
         // Floor Type select (?)
         GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.tag = "Floor";
         floor.name = "Floor";
         floor.transform.localScale = new Vector3(roomSize.x, 1.0f, roomSize.z);
         floor.transform.localPosition = new Vector3(0, 0.5f, 0);
-        floor.transform.SetParent(this.transform);
+        floor.transform.SetParent(toReturn.transform);
+
+        toReturn.AddComponent<BoxCollider>();
+        return toReturn;
     }
 
     // Update is called once per frame
