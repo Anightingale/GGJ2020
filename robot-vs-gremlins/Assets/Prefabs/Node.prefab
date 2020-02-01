@@ -41,15 +41,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8707235211423680970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36238ab35d7d5cd4b8e6c5f7da76dac6, type: 3}
+  m_Script: {fileID: 11500000, guid: 698c844a5f12a3746ba5d6dbe4b82efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSize: {x: 0, y: 0, z: 0}
-  doorSize: 0
-  num_rooms: 40
+  roomSize: {x: 20, y: 5, z: 12}
+  doorSize: 4
+  num_rooms: 4
   longest_path: 0
-  node_prefab: {fileID: 0}
-  seed: 420
+  node_prefab: {fileID: 8707235211423680970}
+  main_camera: {fileID: 0}
+  seed: 0
   seeded: 0
 --- !u!65 &3793586526895730233
 BoxCollider:
