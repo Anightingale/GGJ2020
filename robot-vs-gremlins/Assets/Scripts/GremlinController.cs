@@ -42,9 +42,12 @@ public class GremlinController : MonoBehaviour
 
     public void OnGrabStop (InputValue value) 
     {
-        Debug.Log("Grab stopped.");
-        grabActive = false;
-        grabTime = 0f;
+        if (grabActive) 
+        { 
+            Debug.Log("Grab stopped.");
+            grabActive = false;
+            grabTime = 0f;
+        }
     }
 
     public void OnSpecial ()
