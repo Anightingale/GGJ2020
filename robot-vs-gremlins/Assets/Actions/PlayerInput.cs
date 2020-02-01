@@ -324,7 +324,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""5c7898c3-baa7-4710-9d65-017a09448eb0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -332,7 +332,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Aim"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""b9ffe607-5976-47fd-a1e5-a90f9c6b1de7"",
                     ""expectedControlType"": """",
                     ""processors"": """",

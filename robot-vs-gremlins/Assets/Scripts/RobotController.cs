@@ -5,19 +5,49 @@ using UnityEngine.InputSystem;
 
 public class RobotController : MonoBehaviour
 {
+
+    public float moveSpeed = 10f;
+    public float turnSpeed = 5f;
+    public float turretSpeed = 10f;
+
+    public Transform body;
+    public Transform turret;
+    public CharacterController motor;
+
     Vector2 m_move;
     Vector2 m_aim;
+
+    void Update () {
+        // move
+        Vector3 moveDirection = new Vector3(m_move.x, 0, m_move.y);
+        Vector3 movement = moveDirection * Time.deltaTime * moveSpeed;    
+        motor.Move(Vector3.Project(movement, body.forward));
+
+        // rotate body
+        if (m_move.magnitude > 0.1) 
+        {
+            Quaternion target_rotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
+            body.rotation = Quaternion.Slerp(body.rotation, target_rotation, turnSpeed * Time.deltaTime);
+        }
+
+        // rotate turret
+        Vector3 aimDirection = (new Vector3(m_aim.x, 0, m_aim.y)).normalized;
+        if (m_aim.magnitude > 0.1) 
+        {   
+            Quaternion target_rotation = Quaternion.LookRotation(aimDirection, Vector3.up);
+            turret.rotation = Quaternion.RotateTowards(turret.rotation, target_rotation, turretSpeed * Time.deltaTime);
+        }
+
+    }
 
     public void OnMove (InputValue value) 
     {
         m_move = value.Get<Vector2>();
-        Debug.Log("Move detected with value:" + m_move);
     }
 
     public void OnAim (InputValue value) 
     {
         m_aim = value.Get<Vector2>();
-        Debug.Log("Aim detected with value:" + m_aim);
     }
 
     public void OnJump () {
