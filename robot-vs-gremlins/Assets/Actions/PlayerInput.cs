@@ -27,12 +27,20 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Grab"",
+                    ""name"": ""GrabStart"",
                     ""type"": ""Button"",
                     ""id"": ""8e18993f-fb8b-482d-96f7-dc02ffed8791"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""GrabStop"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c2a9526-95b4-42d8-b499-15734d54cd3f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)""
                 },
                 {
                     ""name"": ""Special"",
@@ -216,7 +224,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Grab"",
+                    ""action"": ""GrabStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -227,7 +235,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Grab"",
+                    ""action"": ""GrabStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -238,7 +246,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Grab"",
+                    ""action"": ""GrabStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -272,6 +280,39 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f4b001b-ac81-45c5-8ffb-0fe1fd26b15a"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GrabStop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""407d2af6-c018-4d9c-870d-7601e8534011"",
+                    ""path"": ""<HID::Logicool Logicool Dual Action>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GrabStop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6492d3df-6580-41e4-b87e-f9a7f31a423b"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GrabStop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -409,7 +450,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         // Gremlin
         m_Gremlin = asset.FindActionMap("Gremlin", throwIfNotFound: true);
         m_Gremlin_Move = m_Gremlin.FindAction("Move", throwIfNotFound: true);
-        m_Gremlin_Grab = m_Gremlin.FindAction("Grab", throwIfNotFound: true);
+        m_Gremlin_GrabStart = m_Gremlin.FindAction("GrabStart", throwIfNotFound: true);
+        m_Gremlin_GrabStop = m_Gremlin.FindAction("GrabStop", throwIfNotFound: true);
         m_Gremlin_Special = m_Gremlin.FindAction("Special", throwIfNotFound: true);
         // Robot
         m_Robot = asset.FindActionMap("Robot", throwIfNotFound: true);
@@ -466,14 +508,16 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Gremlin;
     private IGremlinActions m_GremlinActionsCallbackInterface;
     private readonly InputAction m_Gremlin_Move;
-    private readonly InputAction m_Gremlin_Grab;
+    private readonly InputAction m_Gremlin_GrabStart;
+    private readonly InputAction m_Gremlin_GrabStop;
     private readonly InputAction m_Gremlin_Special;
     public struct GremlinActions
     {
         private @PlayerInput m_Wrapper;
         public GremlinActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gremlin_Move;
-        public InputAction @Grab => m_Wrapper.m_Gremlin_Grab;
+        public InputAction @GrabStart => m_Wrapper.m_Gremlin_GrabStart;
+        public InputAction @GrabStop => m_Wrapper.m_Gremlin_GrabStop;
         public InputAction @Special => m_Wrapper.m_Gremlin_Special;
         public InputActionMap Get() { return m_Wrapper.m_Gremlin; }
         public void Enable() { Get().Enable(); }
@@ -487,9 +531,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_GremlinActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_GremlinActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_GremlinActionsCallbackInterface.OnMove;
-                @Grab.started -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrab;
-                @Grab.performed -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrab;
-                @Grab.canceled -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrab;
+                @GrabStart.started -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStart;
+                @GrabStart.performed -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStart;
+                @GrabStart.canceled -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStart;
+                @GrabStop.started -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStop;
+                @GrabStop.performed -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStop;
+                @GrabStop.canceled -= m_Wrapper.m_GremlinActionsCallbackInterface.OnGrabStop;
                 @Special.started -= m_Wrapper.m_GremlinActionsCallbackInterface.OnSpecial;
                 @Special.performed -= m_Wrapper.m_GremlinActionsCallbackInterface.OnSpecial;
                 @Special.canceled -= m_Wrapper.m_GremlinActionsCallbackInterface.OnSpecial;
@@ -500,9 +547,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Grab.started += instance.OnGrab;
-                @Grab.performed += instance.OnGrab;
-                @Grab.canceled += instance.OnGrab;
+                @GrabStart.started += instance.OnGrabStart;
+                @GrabStart.performed += instance.OnGrabStart;
+                @GrabStart.canceled += instance.OnGrabStart;
+                @GrabStop.started += instance.OnGrabStop;
+                @GrabStop.performed += instance.OnGrabStop;
+                @GrabStop.canceled += instance.OnGrabStop;
                 @Special.started += instance.OnSpecial;
                 @Special.performed += instance.OnSpecial;
                 @Special.canceled += instance.OnSpecial;
@@ -607,7 +657,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     public interface IGremlinActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnGrab(InputAction.CallbackContext context);
+        void OnGrabStart(InputAction.CallbackContext context);
+        void OnGrabStop(InputAction.CallbackContext context);
         void OnSpecial(InputAction.CallbackContext context);
     }
     public interface IRobotActions

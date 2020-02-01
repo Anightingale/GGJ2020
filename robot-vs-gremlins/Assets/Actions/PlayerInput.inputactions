@@ -14,12 +14,20 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Grab",
+                    "name": "GrabStart",
                     "type": "Button",
                     "id": "8e18993f-fb8b-482d-96f7-dc02ffed8791",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold"
+                    "interactions": "Press"
+                },
+                {
+                    "name": "GrabStop",
+                    "type": "Button",
+                    "id": "1c2a9526-95b4-42d8-b499-15734d54cd3f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
                 },
                 {
                     "name": "Special",
@@ -203,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Grab",
+                    "action": "GrabStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -214,7 +222,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Grab",
+                    "action": "GrabStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -225,7 +233,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Grab",
+                    "action": "GrabStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -259,6 +267,39 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Special",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f4b001b-ac81-45c5-8ffb-0fe1fd26b15a",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "GrabStop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "407d2af6-c018-4d9c-870d-7601e8534011",
+                    "path": "<HID::Logicool Logicool Dual Action>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "GrabStop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6492d3df-6580-41e4-b87e-f9a7f31a423b",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "GrabStop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
