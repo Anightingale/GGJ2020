@@ -159,6 +159,9 @@ MonoBehaviour:
   grabLayer:
     serializedVersion: 2
     m_Bits: 256
+  breakLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!54 &4177206388952233993
 Rigidbody:
   m_ObjectHideFlags: 0

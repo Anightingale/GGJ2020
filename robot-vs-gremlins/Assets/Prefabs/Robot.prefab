@@ -1058,6 +1058,7 @@ MonoBehaviour:
   body: {fileID: 2229083195503150334}
   turret: {fileID: 2229083195912316909}
   motor: {fileID: 2229083196377534921}
+  animator: {fileID: 747677544817133728}
 --- !u!95 &747677544817133728
 Animator:
   serializedVersion: 3

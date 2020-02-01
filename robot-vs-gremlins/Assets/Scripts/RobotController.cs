@@ -13,15 +13,20 @@ public class RobotController : MonoBehaviour
     public Transform body;
     public Transform turret;
     public CharacterController motor;
+    public Animator animator;
 
     Vector2 m_move;
     float m_aim;
 
     void Update () {
-        // move
+        // move only in direction body is facing
         Vector3 moveDirection = new Vector3(m_move.x, 0, m_move.y);
-        Vector3 movement = moveDirection * Time.deltaTime * moveSpeed;    
-        motor.Move(Vector3.Project(movement, body.forward));
+        Vector3 movement = Vector3.Project(moveDirection * Time.deltaTime * moveSpeed, body.forward);    
+        motor.Move(movement);
+
+        // update animator
+        float velocity = motor.velocity.magnitude;
+        animator.SetFloat("Speed", velocity/moveSpeed);
 
         // rotate body
         if (m_move.magnitude > 0.1) 

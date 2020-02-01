@@ -5,13 +5,18 @@ using UnityEngine;
 public class GrabController : MonoBehaviour
 {
 
-    public Vector3 centre;
+    public float grabRangeOffset;
     public Vector3 size;
     public LayerMask grabLayer;
+    public LayerMask breakLayer;
 
     ConfigurableJoint joint;
+    Draggable draggable = null;
+    Breakable breakable = null;
 
-    void Start () {
+
+    void Start () 
+    {
         joint = gameObject.AddComponent<ConfigurableJoint>();
         joint.xMotion = ConfigurableJointMotion.Locked;
         joint.yMotion = ConfigurableJointMotion.Locked;
@@ -19,29 +24,115 @@ public class GrabController : MonoBehaviour
         joint.connectedBody = null;
     }
 
-    public bool Grab ()
+    void Update ()
     {
-        Collider col = CheckGrabRange();
+        if (breakable != null)
+        {
+            if (!breakable.BreakUpdate())
+            {
+                breakable = null;
+            }
+        }
+    }
 
-        
+    public float GetModifier ()
+    {
+        // can't move if trying to break
+        if (breakable != null)
+        {
+            return 0f;
+        }
+
+        // slowed if dragging
+        if (draggable != null)
+        {
+            return draggable.dragModifier;
+        }
+
+        // normal otherwise
+        return 1f;
+    }
+
+    public bool IsGrabbing ()
+    {
+        return ! (breakable == null && draggable == null);
+    }
+
+    public void Grab ()
+    {
+        // attempt to drag something
+        Collider col = CheckInRange(grabLayer, ColliderIsDraggable);
         if (col != null)
         {
+            // reset grab
+            if (breakable != null)
+            {
+                breakable.BreakStop();
+                breakable = null;
+            }
+
+            // we are now dragging something
+            Debug.Log("Grabbed: " + col.name);
+            draggable = col.GetComponent<Draggable>();
             joint.connectedBody = col.GetComponent<Rigidbody>();
-            return true;
+
+            return;
         }
-        return false;
+
+        // attempt to pull something off if nothing to drag
+        col = CheckInRange(breakLayer, ColliderIsBreakable);
+        if (col != null)
+        {
+            // reset grab
+            if (draggable != null)
+            {
+                draggable = null;
+                joint.connectedBody = null;
+            }
+            if (breakable != null)
+                breakable.BreakStop();
+
+            // we are now breaking something
+            breakable = col.GetComponent<Breakable>();
+            breakable.BreakStart(transform.position);
+
+            return;
+        }
+
+        Debug.Log("Grabbed: nothing :(");
     }
 
     public void Drop ()
     {
+        draggable = null;
         joint.connectedBody = null;
+
+        if (breakable != null)
+        {
+            breakable.BreakStop();
+            breakable = null;
+        }
     }
 
-    Collider CheckGrabRange()
-    {
-        Collider[] hitColliders = Physics.OverlapBox(transform.TransformPoint(centre), size / 2f, Quaternion.identity, grabLayer);
+    // declare filter higher order function
+    delegate bool filterCollider(Collider col);
 
-        hitColliders = GetCollidersWithRigidbody(hitColliders);
+    // Gets the nearest collider in range that satifies the layer mask and the filter
+    Collider CheckInRange(LayerMask mask, filterCollider filter)
+    {
+        // find all colliders in range
+        Collider[] hitColliders = Physics.OverlapBox(transform.position + transform.forward * grabRangeOffset, size / 2f, transform.rotation, mask);
+
+        // filter hitCollider list
+        List<Collider> col_list = new List<Collider>();
+        foreach (Collider col in hitColliders)
+        {
+            if (filter(col)) 
+                col_list.Add(col);
+        }
+        hitColliders = col_list.ToArray();
+
+        // find closest collider
         if (hitColliders.Length > 0)
         {
             Collider closest = hitColliders[0];
@@ -56,32 +147,28 @@ public class GrabController : MonoBehaviour
                 }
             }
 
-            Debug.Log("Grabbed: " + closest.name);
             return closest;
         }
         
-        Debug.Log("Grabbed: nothing :(");
+        // we got nothing :(
         return null;
     }
 
-    Collider[] GetCollidersWithRigidbody (Collider[] cols)
+    bool ColliderIsDraggable (Collider col)
     {
-        List<Collider> col_list = new List<Collider>();
-
-        foreach (Collider col in cols)
-        {
-            if (col.GetComponent<Rigidbody>() != null) 
-            {
-                col_list.Add(col);
-            }
-        }
-
-        return col_list.ToArray();
+        return col.GetComponent<Draggable>() != null;
     }
 
+    bool ColliderIsBreakable (Collider col)
+    {
+        return col.GetComponent<Breakable>() != null;
+    }
+
+
+    // HANDY EDITOR STUFF
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.TransformPoint(centre), size);
+        Gizmos.DrawWireCube(transform.position + transform.forward * grabRangeOffset, size);
     }
 }

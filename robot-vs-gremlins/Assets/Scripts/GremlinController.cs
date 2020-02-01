@@ -6,14 +6,11 @@ using UnityEngine.InputSystem;
 public class GremlinController : MonoBehaviour
 {
     public float moveSpeed = 10f;
-    public float dragSpeed = 5f;
     public float rotateSpeed = 0.15f;
-    //public CharacterController motor;
     public GrabController grabber;
 
     Vector2 m_move;
     Rigidbody rb;
-    bool isGrabbing = false;
 
     void Start ()
     {
@@ -23,11 +20,10 @@ public class GremlinController : MonoBehaviour
 
     void FixedUpdate ()
     {
-        Vector3 direction = new Vector3 (m_move.x, 0, m_move.y);
-
         // move player
-        float speed = isGrabbing ? dragSpeed : moveSpeed;
-        rb.MovePosition(transform.position + direction * Time.fixedDeltaTime * speed);
+        Vector3 direction = new Vector3 (m_move.x, 0, m_move.y);
+        Vector3 movement = direction * Time.fixedDeltaTime * moveSpeed * grabber.GetModifier();
+        rb.MovePosition(transform.position + movement);
     }
     
     void Update () 
@@ -37,7 +33,7 @@ public class GremlinController : MonoBehaviour
         // rotate player
         if (direction.magnitude > 0.1) 
         {
-            if (isGrabbing)
+            if (grabber.IsGrabbing())
                 direction = -direction;
             Quaternion target_rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
             
@@ -53,18 +49,14 @@ public class GremlinController : MonoBehaviour
 
     public void OnGrabStart (InputValue value) 
     {
-        if (grabber.Grab())
-        {
-            isGrabbing = true;
-        }
+        grabber.Grab();
     }
 
     public void OnGrabStop (InputValue value) 
     {
-        if (isGrabbing)
+        if (grabber.IsGrabbing())
         {
             grabber.Drop();
-            isGrabbing = false;
         }
     }
 
