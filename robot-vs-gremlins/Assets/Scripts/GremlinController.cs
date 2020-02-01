@@ -5,48 +5,55 @@ using UnityEngine.InputSystem;
 
 public class GremlinController : MonoBehaviour
 {
-    public float grabSpeed = 3f;
+    public float moveSpeed = 10f;
+    public float dragSpeed = 5f;
+    public float rotateSpeed = 0.15f;
+    public CharacterController motor;
+    public GrabController grabber;
 
     Vector2 m_move;
-    bool grabActive = false;
-    float grabTime = 0f;
+    bool isGrabbing = false;
 
-    void Update () {
-        if (grabActive) {
-            grabTime += Time.deltaTime;
+    void Update () 
+    {
+        Vector3 direction = (new Vector3 (m_move.x, 0, m_move.y));
 
-            if (grabTime > grabSpeed) {
-                Grab ();
-                grabActive = false;
-                grabTime = 0f;
-            }
+        // move player
+        float speed = isGrabbing ? dragSpeed : moveSpeed;
+        Vector3 movement = direction * Time.deltaTime * speed;
+        motor.Move(movement);
+
+        // rotate player
+        if (direction.magnitude > 0.1) 
+        {
+            if (isGrabbing)
+                direction = -direction;
+            Quaternion target_rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+            
+            transform.rotation = Quaternion.Slerp(transform.rotation, target_rotation, rotateSpeed);
         }
-    }
 
-    void Grab () {
-        Debug.Log("Grab success!");
     }
 
     public void OnMove (InputValue value) 
     {
         m_move = value.Get<Vector2>();
-        Debug.Log("Move detected with value:" + m_move);
     }
 
     public void OnGrabStart (InputValue value) 
     {
-        Debug.Log("Grab started.");
-        grabActive = true;
-        grabTime = 0f;
+        if (grabber.Grab())
+        {
+            isGrabbing = true;
+        }
     }
 
     public void OnGrabStop (InputValue value) 
     {
-        if (grabActive) 
-        { 
-            Debug.Log("Grab stopped.");
-            grabActive = false;
-            grabTime = 0f;
+        if (isGrabbing)
+        {
+            grabber.Drop();
+            isGrabbing = false;
         }
     }
 

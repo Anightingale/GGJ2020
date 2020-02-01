@@ -345,6 +345,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a047ea9-c269-42c4-96c9-1a6b5a13e882"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -378,6 +386,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da2a84d0-eda2-4f88-8419-5d6a30776516"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -458,6 +477,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Robot_Move = m_Robot.FindAction("Move", throwIfNotFound: true);
         m_Robot_Aim = m_Robot.FindAction("Aim", throwIfNotFound: true);
         m_Robot_Shoot = m_Robot.FindAction("Shoot", throwIfNotFound: true);
+        m_Robot_Jump = m_Robot.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -567,6 +587,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Robot_Move;
     private readonly InputAction m_Robot_Aim;
     private readonly InputAction m_Robot_Shoot;
+    private readonly InputAction m_Robot_Jump;
     public struct RobotActions
     {
         private @PlayerInput m_Wrapper;
@@ -574,6 +595,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Robot_Move;
         public InputAction @Aim => m_Wrapper.m_Robot_Aim;
         public InputAction @Shoot => m_Wrapper.m_Robot_Shoot;
+        public InputAction @Jump => m_Wrapper.m_Robot_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Robot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -592,6 +614,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
+                @Jump.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_RobotActionsCallbackInterface = instance;
             if (instance != null)
@@ -605,6 +630,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -666,5 +694,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
