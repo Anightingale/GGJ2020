@@ -8,20 +8,31 @@ public class GremlinController : MonoBehaviour
     public float moveSpeed = 10f;
     public float dragSpeed = 5f;
     public float rotateSpeed = 0.15f;
-    public CharacterController motor;
+    //public CharacterController motor;
     public GrabController grabber;
 
     Vector2 m_move;
+    Rigidbody rb;
     bool isGrabbing = false;
 
-    void Update () 
+    void Start ()
     {
-        Vector3 direction = (new Vector3 (m_move.x, 0, m_move.y));
+        rb = GetComponent<Rigidbody>();
+    }
+
+
+    void FixedUpdate ()
+    {
+        Vector3 direction = new Vector3 (m_move.x, 0, m_move.y);
 
         // move player
         float speed = isGrabbing ? dragSpeed : moveSpeed;
-        Vector3 movement = direction * Time.deltaTime * speed;
-        motor.Move(movement);
+        rb.MovePosition(transform.position + direction * Time.fixedDeltaTime * speed);
+    }
+    
+    void Update () 
+    {
+        Vector3 direction = (new Vector3 (m_move.x, 0, m_move.y));
 
         // rotate player
         if (direction.magnitude > 0.1) 

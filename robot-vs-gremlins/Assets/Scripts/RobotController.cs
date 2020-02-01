@@ -15,7 +15,7 @@ public class RobotController : MonoBehaviour
     public CharacterController motor;
 
     Vector2 m_move;
-    Vector2 m_aim;
+    float m_aim;
 
     void Update () {
         // move
@@ -31,12 +31,7 @@ public class RobotController : MonoBehaviour
         }
 
         // rotate turret
-        Vector3 aimDirection = (new Vector3(m_aim.x, 0, m_aim.y)).normalized;
-        if (m_aim.magnitude > 0.1) 
-        {   
-            Quaternion target_rotation = Quaternion.LookRotation(aimDirection, Vector3.up);
-            turret.rotation = Quaternion.RotateTowards(turret.rotation, target_rotation, turretSpeed * Time.deltaTime);
-        }
+        turret.RotateAround(turret.position, turret.up, m_aim * turretSpeed * Time.deltaTime);
 
     }
 
@@ -47,7 +42,7 @@ public class RobotController : MonoBehaviour
 
     public void OnAim (InputValue value) 
     {
-        m_aim = value.Get<Vector2>();
+        m_aim = value.Get<float>();
     }
 
     public void OnJump () {

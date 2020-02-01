@@ -186,7 +186,6 @@ GameObject:
   - component: {fileID: 4177206389086804070}
   - component: {fileID: 4177206389086804073}
   - component: {fileID: 4177206389086804074}
-  - component: {fileID: 4177206389086804067}
   - component: {fileID: 4177206389086804069}
   - component: {fileID: 4177206389086804068}
   m_Layer: 0
@@ -203,7 +202,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4177206389086804075}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -235,31 +234,13 @@ Rigidbody:
   m_GameObject: {fileID: 4177206389086804075}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 100
+  m_AngularDrag: 50
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!143 &4177206389086804067
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177206389086804075}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 0
-  m_StepOffset: 0
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4177206389086804069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +343,7 @@ MonoBehaviour:
     m_ActionId: d95977ef-dd8a-4f73-95f1-175062794ca1
     m_ActionName: Robot/Shoot[/XInputControllerWindows/rightTrigger]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Gremlin
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -381,7 +362,6 @@ MonoBehaviour:
   moveSpeed: 10
   dragSpeed: 5
   rotateSpeed: 0.15
-  motor: {fileID: 4177206389086804067}
   grabber: {fileID: 4177206388952233996}
 --- !u!1 &4177206389565972605
 GameObject:
