@@ -22,7 +22,7 @@ public class RoomGenerator : ScriptableObject
 
     // Apologies for this big boye
 
-    public GameObject generateRoom(bool north_door, bool east_door, bool south_door, bool west_door, Vector3 roomSize, float doorSize, int num_rooms, GameObject node_prefab)
+    public GameObject generateRoom(bool north_door, bool east_door, bool south_door, bool west_door, Vector3 roomSize, float doorSize, int num_rooms, GameObject node_prefab, Camera mainCamera)
     {
         GameObject toReturn = new GameObject();
 

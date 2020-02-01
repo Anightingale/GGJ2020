@@ -242,11 +242,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomSize: {x: 20, y: 5, z: 12}
   doorSize: 4
-  num_rooms: 1
+  num_rooms: 4
   longest_path: 0
   node_prefab: {fileID: 8707235211423680970, guid: 5241f0188f61d834f82001d974373a2f,
     type: 3}
-  seed: 420
+  main_camera: {fileID: 1066912379}
+  seed: 0
   seeded: 0
 --- !u!4 &921157876
 Transform:
@@ -338,10 +339,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066912377}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
+  m_LocalPosition: {x: 0, y: 15, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
