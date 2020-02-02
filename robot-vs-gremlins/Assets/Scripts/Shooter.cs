@@ -41,8 +41,6 @@ public class Shooter : MonoBehaviour
             GoblinHealth gob = hit.collider.GetComponent<GoblinHealth>();
             if (gob != null)
             {
-                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
-                Debug.Log("hit");
                 gob.TakeDamage(damage);
             }
         }   

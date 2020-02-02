@@ -280,7 +280,7 @@ MonoBehaviour:
   startingHealth: 100
   isAlive: 1
   isSweating: 0
-  healthBar: {fileID: 5646318484447516748}
+  healthBar: {fileID: 5646318484862071906}
 --- !u!1 &5646318484447516750
 GameObject:
   m_ObjectHideFlags: 0
