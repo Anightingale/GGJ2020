@@ -47,7 +47,6 @@ public class RobotController : MonoBehaviour
 
         // update animator
         animator.SetFloat("Speed", velocity/moveSpeed);
-        //AudioManager.instance.Play("RobotStartMoving");
 
         // rotate body
         if (m_move.magnitude > 0.1) 
@@ -55,9 +54,22 @@ public class RobotController : MonoBehaviour
             Quaternion target_rotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
             body.rotation = Quaternion.Slerp(body.rotation, target_rotation, turnSpeed * Time.deltaTime);
 
-
+			if (footstepsPlaying == false)
+            {
+                AudioManager.instance.Play("RobotStartMoving");
+                AudioManager.instance.Play("RobotFootsteps");
+                
+                footstepsPlaying = true;
+            }
         }
 
+		
+        if (m_move.magnitude < 0.1)
+        {
+            AudioManager.instance.Pause("RobotFootsteps");
+            footstepsPlaying = false;
+
+        }
 
         // rotate turret
         turret.RotateAround(turret.position, turret.up, m_aim * turretSpeed * Time.deltaTime);

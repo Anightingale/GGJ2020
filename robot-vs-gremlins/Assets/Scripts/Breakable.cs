@@ -31,6 +31,7 @@ public class Breakable : MonoBehaviour
     {
         if (active)
         {
+            AudioManager.instance.Play("RemoveRobotPart");
             timer = 0f;
             breaking = true;
             force = (breaker - transform.position).normalized;
@@ -61,6 +62,7 @@ public class Breakable : MonoBehaviour
 
         GameObject new_broken = Instantiate(broken, transform.position + Vector3.up, transform.rotation);
         
+        AudioManager.instance.Play("RemoveRobotPart2");
         /*Rigidbody new_broken_rb = new_broken.GetComponent<Rigidbody>();
         if (new_broken_rb != null)
         {

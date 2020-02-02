@@ -57,6 +57,8 @@ public class GoblinHealth : MonoBehaviour
     public void Death()
     {
         Debug.Log("Dead");
+		
+        AudioManager.instance.Play("GremlinDeath");
         StartCoroutine(PlayParticle(deathEffect, 3f));
         gremlin.SetActive(false);
         isAlive = false;
@@ -73,6 +75,7 @@ public class GoblinHealth : MonoBehaviour
     public void Hit()
     {
         Debug.Log("Hit");
+        AudioManager.instance.Play("GremlinHit");
         StartCoroutine(PlayParticle(hitEffect, 0.25f));
     }
 
