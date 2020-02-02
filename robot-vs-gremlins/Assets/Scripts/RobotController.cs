@@ -69,8 +69,4 @@ public class RobotController : MonoBehaviour
     public void OnJump () {
         Debug.Log("Jumped!");
     }
-
-    public void OnShoot () {
-        Debug.Log("PEW PEW");
-    }
 }
