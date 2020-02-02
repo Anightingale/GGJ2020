@@ -5,7 +5,6 @@ using UnityEngine;
 public class Breakable : MonoBehaviour
 {
     public GameObject broken;
-    public GameObject toDisable;
     public float timeToBreak = 3f;
     public float breakImpulse = 5f;
     public bool active = true;
@@ -59,17 +58,19 @@ public class Breakable : MonoBehaviour
     void Break()
     {
         active = false;
-        toDisable.SetActive(false);
 
         GameObject new_broken = Instantiate(broken, transform.position, transform.rotation);
-        Rigidbody new_broken_rb = new_broken.GetComponent<Rigidbody>();
+        
+        /*Rigidbody new_broken_rb = new_broken.GetComponent<Rigidbody>();
         if (new_broken_rb != null)
         {
             new_broken_rb.AddForce(force * breakImpulse, ForceMode.Impulse);
             Debug.Log(force * breakImpulse);
-        }
+        }*/
         
         Debug.Log("I broke!");
+        
+        this.gameObject.SetActive(false);
     }
 }
 
