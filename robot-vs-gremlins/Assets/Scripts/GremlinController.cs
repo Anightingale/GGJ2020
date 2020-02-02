@@ -45,6 +45,8 @@ public class GremlinController : MonoBehaviour
     public void OnMove (InputValue value) 
     {
         m_move = value.Get<Vector2>();
+
+        //AudioManager.instance.Play("GremlinFootsteps");
     }
 
     public void OnGrabStart (InputValue value) 
