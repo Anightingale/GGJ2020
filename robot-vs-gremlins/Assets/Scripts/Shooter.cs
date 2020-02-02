@@ -7,6 +7,7 @@ public class Shooter : MonoBehaviour
     public ParticleSystem shootEffect;
     public LayerMask m_shootable;
     public float fireRate = 0.5f;
+    public int damage = 30;
 
     bool fireOn = false;
     float timeSinceLastShot = 0f;
@@ -36,8 +37,14 @@ public class Shooter : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, m_shootable))
         {
-            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
-            Debug.Log("hit");
+
+            GoblinHealth gob = hit.collider.GetComponent<GoblinHealth>();
+            if (gob != null)
+            {
+                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
+                Debug.Log("hit");
+                gob.TakeDamage(damage);
+            }
         }   
 
     }
