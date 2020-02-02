@@ -43,7 +43,6 @@ public class RobotController : MonoBehaviour
 
         // update animator
         animator.SetFloat("Speed", velocity/moveSpeed);
-        Debug.Log(velocity);
 
         // rotate body
         if (m_move.magnitude > 0.1) 

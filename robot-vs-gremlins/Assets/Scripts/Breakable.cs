@@ -59,7 +59,7 @@ public class Breakable : MonoBehaviour
     {
         active = false;
 
-        GameObject new_broken = Instantiate(broken, transform.position, transform.rotation);
+        GameObject new_broken = Instantiate(broken, transform.position + Vector3.up, transform.rotation);
         
         /*Rigidbody new_broken_rb = new_broken.GetComponent<Rigidbody>();
         if (new_broken_rb != null)
