@@ -40,10 +40,13 @@ public class RoomGenerator : ScriptableObject
         node_prefab.GetComponent<MapGenerator>().seeded = true;
 
         // Select a random material from the list of materials:
+        if(materials.Length <= 0){
+            Debug.Log("Add at least one material to the pool of materials for room generation.");
+            return null;
+        } 
         int mat_index = Random.Range(0, materials.Length);
         // Debug.Log("Index: " + mat_index + " For materials.length: " + materials.Length);
         Material m = materials[(int)Mathf.Floor(Random.Range(0.0f, materials.Length))];
-        
         // North
         if(north_door){
             // generate north "door"
@@ -222,11 +225,12 @@ public class RoomGenerator : ScriptableObject
         floor.GetComponent<Renderer>().material = m; 
         floor.transform.SetParent(toReturn.transform);
 
-        // Select a random material from the list of materials:
-        int obs_index = Random.Range(0, obstacle_prefabs.Length);
-        GameObject obs = Instantiate(obstacle_prefabs[(int)Mathf.Floor(Random.Range(0.0f, obstacle_prefabs.Length))]);
-
-        obs.transform.SetParent(toReturn.transform);
+        // Select a random obstacle prefab from the list of materials:
+        if(obstacle_prefabs.Length > 0){
+            int obs_index = Random.Range(0, obstacle_prefabs.Length);
+            GameObject obs = Instantiate(obstacle_prefabs[(int)Mathf.Floor(Random.Range(0.0f, obstacle_prefabs.Length))]);
+            obs.transform.SetParent(toReturn.transform);
+        }
 
         toReturn.AddComponent<BoxCollider>();
         return toReturn;

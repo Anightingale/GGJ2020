@@ -476,7 +476,8 @@ MonoBehaviour:
   node_prefab: {fileID: 8707235211423680970, guid: 01a0c5dfd38ffc54bb3ecf6e7c52329e,
     type: 3}
   main_camera: {fileID: 0}
-  materials: []
+  materials:
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   obstacles: []
   seed: 0
   seeded: 0
