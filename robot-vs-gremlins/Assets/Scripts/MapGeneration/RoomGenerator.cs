@@ -22,7 +22,11 @@ public class RoomGenerator : ScriptableObject
 
     // Apologies for this big boye
 
-    public GameObject generateRoom(bool north_door, bool east_door, bool south_door, bool west_door, Vector3 roomSize, float doorSize, int num_rooms, GameObject node_prefab, Camera mainCamera)
+    public GameObject generateRoom(
+        bool north_door, bool east_door, bool south_door, bool west_door, 
+        Vector3 roomSize, float doorSize, int num_rooms, 
+        Material[] materials, GameObject[] obstacle_prefabs, 
+        GameObject node_prefab, Camera mainCamera)
     {
         GameObject toReturn = new GameObject();
 
@@ -31,7 +35,14 @@ public class RoomGenerator : ScriptableObject
         node_prefab.GetComponent<MapGenerator>().doorSize = doorSize;
         node_prefab.GetComponent<MapGenerator>().num_rooms = num_rooms-1;
         node_prefab.GetComponent<MapGenerator>().longest_path = longest_path;
+        node_prefab.GetComponent<MapGenerator>().materials = materials;
+        node_prefab.GetComponent<MapGenerator>().obstacles = obstacle_prefabs;
         node_prefab.GetComponent<MapGenerator>().seeded = true;
+
+        // Select a random material from the list of materials:
+        int mat_index = Random.Range(0, materials.Length);
+        // Debug.Log("Index: " + mat_index + " For materials.length: " + materials.Length);
+        Material m = materials[(int)Mathf.Floor(Random.Range(0.0f, materials.Length))];
         
         // North
         if(north_door){
@@ -46,12 +57,14 @@ public class RoomGenerator : ScriptableObject
             GameObject w1 = GameObject.CreatePrimitive(PrimitiveType.Cube); 
             w1.transform.localScale = scale;
             w1.transform.localPosition = new Vector3((roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),(float)(roomSize.z/2 - 0.5));
+            w1.GetComponent<Renderer>().material = m; 
             w1.transform.SetParent(wall.transform);
 
             // Create the left wall section
             GameObject w2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3(-(roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),(float)(roomSize.z/2 - 0.5));
+            w2.GetComponent<Renderer>().material = m; 
             w2.transform.SetParent(wall.transform);
 
             // Generate a Node
@@ -70,6 +83,7 @@ public class RoomGenerator : ScriptableObject
             wall.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1.0f);
             wall.transform.localPosition = new Vector3(0.0f,(float)(roomSize.y/2),(float)(roomSize.z/2 - 0.5));
 
+            wall.GetComponent<Renderer>().material = m; 
             wall.transform.SetParent(toReturn.transform);
         }
         // East
@@ -85,12 +99,14 @@ public class RoomGenerator : ScriptableObject
             GameObject w1 = GameObject.CreatePrimitive(PrimitiveType.Cube); 
             w1.transform.localScale = scale;
             w1.transform.localPosition = new Vector3((float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),(roomSize.z+doorSize)/4.0f);
+            w1.GetComponent<Renderer>().material = m; 
             w1.transform.SetParent(wall.transform);
 
             // Create the left wall section
             GameObject w2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3((float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),-(roomSize.z+doorSize)/4.0f);
+            w2.GetComponent<Renderer>().material = m; 
             w2.transform.SetParent(wall.transform);
 
             // Generate a Node
@@ -109,6 +125,7 @@ public class RoomGenerator : ScriptableObject
             wall.transform.localScale = new Vector3(1.0f, roomSize.y, roomSize.z);
             wall.transform.localPosition = new Vector3((float)(roomSize.x/2 - 0.5), (float)(roomSize.y/2), 0.0f);
 
+            wall.GetComponent<Renderer>().material = m; 
             wall.transform.SetParent(toReturn.transform);
         }
         // South
@@ -124,12 +141,14 @@ public class RoomGenerator : ScriptableObject
             GameObject w1 = GameObject.CreatePrimitive(PrimitiveType.Cube); 
             w1.transform.localScale = scale;
             w1.transform.localPosition = new Vector3((roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),-(float)(roomSize.z/2 - 0.5));
+            w1.GetComponent<Renderer>().material = m; 
             w1.transform.SetParent(wall.transform);
 
             // Create the left wall section
             GameObject w2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3(-(roomSize.x+doorSize)/4.0f,(float)(roomSize.y/2),-(float)(roomSize.z/2 - 0.5));
+            w2.GetComponent<Renderer>().material = m; 
             w2.transform.SetParent(wall.transform);
 
             // Generate a Node
@@ -148,6 +167,7 @@ public class RoomGenerator : ScriptableObject
             wall.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1.0f);
             wall.transform.localPosition = new Vector3(0.0f,(float)(roomSize.y/2),-(float)(roomSize.z/2 - 0.5));
 
+            wall.GetComponent<Renderer>().material = m; 
             wall.transform.SetParent(toReturn.transform);
         }
         // West
@@ -163,12 +183,14 @@ public class RoomGenerator : ScriptableObject
             GameObject w1 = GameObject.CreatePrimitive(PrimitiveType.Cube); 
             w1.transform.localScale = scale;
             w1.transform.localPosition = new Vector3(-(float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),(roomSize.z+doorSize)/4.0f);
+            w1.GetComponent<Renderer>().material = m; 
             w1.transform.SetParent(wall.transform);
 
             // Create the left wall section
             GameObject w2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             w2.transform.localScale = scale;
             w2.transform.localPosition = new Vector3(-(float)(roomSize.x/2 - 0.5),(float)(roomSize.y/2),-(roomSize.z+doorSize)/4.0f);
+            w2.GetComponent<Renderer>().material = m; 
             w2.transform.SetParent(wall.transform);
             
             // Generate a Node
@@ -187,6 +209,7 @@ public class RoomGenerator : ScriptableObject
             wall.transform.localScale = new Vector3(1.0f, roomSize.y, roomSize.z);
             wall.transform.localPosition = new Vector3(-(float)(roomSize.x/2 - 0.5), (float)(roomSize.y/2), 0.0f);
 
+            wall.GetComponent<Renderer>().material = m; 
             wall.transform.SetParent(toReturn.transform);
         }
 
@@ -196,7 +219,14 @@ public class RoomGenerator : ScriptableObject
         floor.name = "Floor";
         floor.transform.localScale = new Vector3(roomSize.x, 1.0f, roomSize.z);
         floor.transform.localPosition = new Vector3(0, 0.5f, 0);
+        floor.GetComponent<Renderer>().material = m; 
         floor.transform.SetParent(toReturn.transform);
+
+        // Select a random material from the list of materials:
+        int obs_index = Random.Range(0, obstacle_prefabs.Length);
+        GameObject obs = Instantiate(obstacle_prefabs[(int)Mathf.Floor(Random.Range(0.0f, obstacle_prefabs.Length))]);
+
+        obs.transform.SetParent(toReturn.transform);
 
         toReturn.AddComponent<BoxCollider>();
         return toReturn;

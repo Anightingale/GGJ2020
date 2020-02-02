@@ -469,13 +469,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698c844a5f12a3746ba5d6dbe4b82efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSize: {x: 40, y: 5, z: 24}
+  roomSize: {x: 80, y: 5, z: 50}
   doorSize: 8
   num_rooms: 4
   longest_path: 0
   node_prefab: {fileID: 8707235211423680970, guid: 01a0c5dfd38ffc54bb3ecf6e7c52329e,
     type: 3}
   main_camera: {fileID: 0}
+  materials: []
+  obstacles: []
   seed: 0
   seeded: 0
 --- !u!4 &921157876
@@ -569,7 +571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066912377}
   m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
-  m_LocalPosition: {x: 0, y: 30, z: -3}
+  m_LocalPosition: {x: 0, y: 50, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -601,12 +603,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1313103804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2510e5fa28a029a4999c0805d2d6ef0b, type: 3}
+  m_Script: {fileID: 11500000, guid: ca76cd7b67271d249ab6449cf09745a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input_offset: {x: 20, y: 12}
-  output_offset: {x: 0, y: -8}
-  room_size: {x: 40, y: 24}
+  cameraSpeed: 10
+  input_offset: {x: 40, y: 25}
+  output_offset: {x: 0, y: -15}
+  room_size: {x: 80, y: 50}
   mainCamera: {fileID: 1066912379}
   myPlayer: {fileID: 2007900705}
 --- !u!4 &1313103806

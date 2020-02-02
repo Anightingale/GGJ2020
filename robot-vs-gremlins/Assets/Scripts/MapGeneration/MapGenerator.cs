@@ -11,6 +11,9 @@ public class MapGenerator : MonoBehaviour
     public GameObject node_prefab;
     public Camera main_camera;
 
+    public Material[] materials;
+    public GameObject[] obstacles;
+
     public int seed;
     public bool seeded = false;
 
@@ -32,7 +35,7 @@ public class MapGenerator : MonoBehaviour
             seeded = true;
         }
         if(this.CompareTag("Rooms") == true){
-            GameObject startRoom = roomGenerator.generateRoom(true, true, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+            GameObject startRoom = roomGenerator.generateRoom(true, true, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
             startRoom.transform.SetParent(this.transform);
         } else {
             //Start generateRoom on a delay
@@ -63,28 +66,30 @@ public class MapGenerator : MonoBehaviour
             openingDir = 1;
         }
 
+        // This is a silly way to to do this -- don't need to Instantiate the GameObject since it is already in the scene...
+
         if(this.num_rooms == 1){
             if(openingDir == 0){
                 // North
-                GameObject room = roomGenerator.generateRoom(true, false, false, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, false, false, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
             } else if(openingDir == 1){
                 // East
-                GameObject room = roomGenerator.generateRoom(false, true, false, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, true, false, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
             } else if(openingDir == 2){
                 // South
-                GameObject room = roomGenerator.generateRoom(false, false, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, false, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
             } else if(openingDir == 3){
                 // West
-                GameObject room = roomGenerator.generateRoom(false, false, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, false, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
@@ -107,13 +112,13 @@ public class MapGenerator : MonoBehaviour
             if( exitDir < 1 ){
                 if(numExits == 1){
                     // Exit East
-                    GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit East + West
-                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -121,13 +126,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 2){
                 if(numExits == 1){
                     // Exit South
-                    GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit South + East
-                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -135,13 +140,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 3) {
                 if(numExits == 1){
                     // Exit West
-                    GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit West + South
-                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -153,13 +158,13 @@ public class MapGenerator : MonoBehaviour
             if( exitDir < 1 ){
                 if(numExits == 1){
                     // Exit North
-                    GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit North + West
-                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -167,13 +172,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 2){
                 if(numExits == 1){
                     // Exit South
-                    GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit South + North
-                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -181,13 +186,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 3) {
                 if(numExits == 1){
                     // Exit West
-                    GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit West + South
-                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -199,13 +204,13 @@ public class MapGenerator : MonoBehaviour
             if( exitDir < 1 ){
                 if(numExits == 1){
                     // Exit North
-                    GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit North + West
-                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -213,13 +218,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 2){
                 if(numExits == 1){
                     // Exit East
-                    GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit East + North
-                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, true, false, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -227,13 +232,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 3) {
                 if(numExits == 1){
                     // Exit West
-                    GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit West + East
-                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -245,13 +250,13 @@ public class MapGenerator : MonoBehaviour
             if( exitDir < 1 ){
                 if(numExits == 1){
                     // Exit North
-                    GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit North + South
-                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, false, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -259,13 +264,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 2){
                 if(numExits == 1){
                     // Exit East
-                    GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit East + North
-                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(true, true, false, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -273,13 +278,13 @@ public class MapGenerator : MonoBehaviour
             } else if (exitDir < 3) {
                 if(numExits == 1){
                     // Exit South
-                    GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
                 } else if (numExits == 2){
                     // Exit South + East
-                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, node_prefab, main_camera);
+                    GameObject room = roomGenerator.generateRoom(false, true, true, true, roomSize, doorSize, num_rooms, materials, obstacles, node_prefab, main_camera);
                     Instantiate(room, this.transform.position, Quaternion.identity);
                     Destroy(room);
                     Destroy(gameObject);
@@ -305,19 +310,19 @@ public class MapGenerator : MonoBehaviour
         if(other.CompareTag("North")){
             // South Opening
             if(this.CompareTag("East")){
-                GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("South")){
-                GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("West")){
-                GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
@@ -326,19 +331,19 @@ public class MapGenerator : MonoBehaviour
         } else if (other.CompareTag("East")){
             // West Opening
             if(this.CompareTag("North")){
-                GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, true, false, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("South")){
-                GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("West")){
-                GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
@@ -347,19 +352,19 @@ public class MapGenerator : MonoBehaviour
         } else if (other.CompareTag("South")){
             // North Opening
             if(this.CompareTag("East")){
-                GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, true, true, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("North")){
-                GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, false, true, false, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("West")){
-                GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
@@ -368,19 +373,19 @@ public class MapGenerator : MonoBehaviour
         } else if (other.CompareTag("West")){
             // East Opening
             if(this.CompareTag("East")){
-                GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, true, false, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("South")){
-                GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(false, false, true, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
                 Destroy(other);
             } else if (this.CompareTag("North")){
-                GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, 0, node_prefab, main_camera);
+                GameObject room = roomGenerator.generateRoom(true, false, false, true, roomSize, doorSize, 0, materials, obstacles, node_prefab, main_camera);
                 Instantiate(room, this.transform.position, Quaternion.identity);
                 Destroy(room);
                 Destroy(gameObject);
