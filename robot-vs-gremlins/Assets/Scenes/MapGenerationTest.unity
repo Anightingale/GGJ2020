@@ -480,7 +480,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9c50d62fbcf722249a1e7d2a913619f6, type: 2}
   wall_materials:
   - {fileID: 2100000, guid: d7f550449c0752343aa4b7c2d5acecd4, type: 2}
-  obstacles: []
+  obstacles:
+  - {fileID: 4426636955645856717, guid: 7b1fada3df1f9864ea4d127448996138, type: 3}
   seed: 2147483647
   seeded: 0
 --- !u!4 &921157876
