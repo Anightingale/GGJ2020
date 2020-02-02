@@ -12,6 +12,8 @@ public class GremlinController : MonoBehaviour
     Vector2 m_move;
     Rigidbody rb;
 
+    bool footstepsPlaying = false;
+	
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,13 +40,29 @@ public class GremlinController : MonoBehaviour
             Quaternion target_rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
             
             transform.rotation = Quaternion.Slerp(transform.rotation, target_rotation, rotateSpeed);
+			
+			if (footstepsPlaying == false)
+            {
+                AudioManager.instance.Play("GremlinFootsteps");
+
+                footstepsPlaying = true;
+            }
         }
 
+		
+        if (m_move.magnitude < 0.1)
+        {
+            AudioManager.instance.Pause("GremlinFootsteps");
+            footstepsPlaying = false;
+
+        }
     }
 
     public void OnMove (InputValue value) 
     {
         m_move = value.Get<Vector2>();
+
+        //AudioManager.instance.Play("GremlinFootsteps");
     }
 
     public void OnGrabStart (InputValue value) 

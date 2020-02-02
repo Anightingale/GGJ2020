@@ -20,8 +20,11 @@ public class RobotController : MonoBehaviour
     Vector3 lastPos;  
     float velocity = 0f;
 
+    bool footstepsPlaying = false;
+
     void Start ()
     {
+   
         rb = GetComponent<Rigidbody>();
         lastPos = rb.position;
     }
@@ -36,6 +39,7 @@ public class RobotController : MonoBehaviour
 
         velocity = (rb.position - lastPos).magnitude / Time.fixedDeltaTime;
         lastPos = rb.position;
+        
     }
 
     void Update () {
@@ -49,6 +53,22 @@ public class RobotController : MonoBehaviour
         {
             Quaternion target_rotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
             body.rotation = Quaternion.Slerp(body.rotation, target_rotation, turnSpeed * Time.deltaTime);
+
+			if (footstepsPlaying == false)
+            {
+                AudioManager.instance.Play("RobotStartMoving");
+                AudioManager.instance.Play("RobotFootsteps");
+                
+                footstepsPlaying = true;
+            }
+        }
+
+		
+        if (m_move.magnitude < 0.1)
+        {
+            AudioManager.instance.Pause("RobotFootsteps");
+            footstepsPlaying = false;
+
         }
 
         // rotate turret
@@ -58,7 +78,9 @@ public class RobotController : MonoBehaviour
 
     public void OnMove (InputValue value) 
     {
+        
         m_move = value.Get<Vector2>();
+       
     }
 
     public void OnAim (InputValue value) 

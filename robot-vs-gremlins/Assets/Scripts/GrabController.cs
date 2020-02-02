@@ -9,6 +9,7 @@ public class GrabController : MonoBehaviour
     public Vector3 size;
     public LayerMask grabLayer;
     public LayerMask breakLayer;
+    public GoblinHealth healthManager;
 
     ConfigurableJoint joint;
     Draggable draggable = null;
@@ -31,6 +32,10 @@ public class GrabController : MonoBehaviour
             if (!breakable.BreakUpdate())
             {
                 breakable = null;
+                if (healthManager.isSweating)
+                {
+                    healthManager.SweatToggle();
+                }
             }
         }
     }
@@ -76,6 +81,11 @@ public class GrabController : MonoBehaviour
             draggable = col.GetComponent<Draggable>();
             joint.connectedBody = col.GetComponent<Rigidbody>();
 
+            if (!healthManager.isSweating)
+            {
+                healthManager.SweatToggle();
+            }
+
             return;
         }
 
@@ -96,6 +106,12 @@ public class GrabController : MonoBehaviour
             breakable = col.GetComponent<Breakable>();
             breakable.BreakStart(transform.position);
 
+            
+            if (!healthManager.isSweating)
+            {
+                healthManager.SweatToggle();
+            }
+
             return;
         }
 
@@ -111,6 +127,11 @@ public class GrabController : MonoBehaviour
         {
             breakable.BreakStop();
             breakable = null;
+        }
+
+        if (healthManager.isSweating)
+        {
+            healthManager.SweatToggle();
         }
     }
 
@@ -163,6 +184,7 @@ public class GrabController : MonoBehaviour
     {
         return col.GetComponent<Breakable>() != null;
     }
+
 
 
     // HANDY EDITOR STUFF
