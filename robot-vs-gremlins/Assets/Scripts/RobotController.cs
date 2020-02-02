@@ -49,20 +49,6 @@ public class RobotController : MonoBehaviour
         {
             Quaternion target_rotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
             body.rotation = Quaternion.Slerp(body.rotation, target_rotation, turnSpeed * Time.deltaTime);
-
-            if (footstepsPlaying == false)
-            {
-                AudioManager.instance.Play("RobotStartMoving");
-                AudioManager.instance.Play("RobotFootsteps");
-                
-                footstepsPlaying = true;
-            }
-
-        }
-        if (m_move.magnitude < 0.1)
-        {
-            AudioManager.instance.Pause("RobotFootsteps");
-            footstepsPlaying = false;
         }
 
         // rotate turret
