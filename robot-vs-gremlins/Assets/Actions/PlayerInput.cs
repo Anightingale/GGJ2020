@@ -234,7 +234,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""id"": ""d95977ef-dd8a-4f73-95f1-175062794ca1"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""StopShoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""18aa2058-babe-4cc1-828d-4255424af334"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)""
                 },
                 {
                     ""name"": ""Jump"",
@@ -333,6 +341,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e717b043-425a-4131-8145-9d7f49a27c94"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""StopShoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8b1e356-354a-4285-9cc9-25a1eaaea956"",
+                    ""path"": ""<HID::Logicool Logicool Dual Action>/button8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Logicool Shitty Controller"",
+                    ""action"": ""StopShoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -373,6 +403,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Robot_Move = m_Robot.FindAction("Move", throwIfNotFound: true);
         m_Robot_Aim = m_Robot.FindAction("Aim", throwIfNotFound: true);
         m_Robot_Shoot = m_Robot.FindAction("Shoot", throwIfNotFound: true);
+        m_Robot_StopShoot = m_Robot.FindAction("StopShoot", throwIfNotFound: true);
         m_Robot_Jump = m_Robot.FindAction("Jump", throwIfNotFound: true);
     }
 
@@ -483,6 +514,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Robot_Move;
     private readonly InputAction m_Robot_Aim;
     private readonly InputAction m_Robot_Shoot;
+    private readonly InputAction m_Robot_StopShoot;
     private readonly InputAction m_Robot_Jump;
     public struct RobotActions
     {
@@ -491,6 +523,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Robot_Move;
         public InputAction @Aim => m_Wrapper.m_Robot_Aim;
         public InputAction @Shoot => m_Wrapper.m_Robot_Shoot;
+        public InputAction @StopShoot => m_Wrapper.m_Robot_StopShoot;
         public InputAction @Jump => m_Wrapper.m_Robot_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Robot; }
         public void Enable() { Get().Enable(); }
@@ -510,6 +543,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnShoot;
+                @StopShoot.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnStopShoot;
+                @StopShoot.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnStopShoot;
+                @StopShoot.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnStopShoot;
                 @Jump.started -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_RobotActionsCallbackInterface.OnJump;
@@ -526,6 +562,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @StopShoot.started += instance.OnStopShoot;
+                @StopShoot.performed += instance.OnStopShoot;
+                @StopShoot.canceled += instance.OnStopShoot;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -563,6 +602,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnStopShoot(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }
 }

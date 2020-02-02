@@ -221,7 +221,15 @@
                     "id": "d95977ef-dd8a-4f73-95f1-175062794ca1",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
+                },
+                {
+                    "name": "StopShoot",
+                    "type": "Button",
+                    "id": "18aa2058-babe-4cc1-828d-4255424af334",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
                 },
                 {
                     "name": "Jump",
@@ -318,6 +326,28 @@
                     "processors": "",
                     "groups": "Logicool Shitty Controller",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e717b043-425a-4131-8145-9d7f49a27c94",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "StopShoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8b1e356-354a-4285-9cc9-25a1eaaea956",
+                    "path": "<HID::Logicool Logicool Dual Action>/button8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Logicool Shitty Controller",
+                    "action": "StopShoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
