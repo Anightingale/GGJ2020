@@ -47,7 +47,7 @@ public class RobotController : MonoBehaviour
 
         // update animator
         animator.SetFloat("Speed", velocity/moveSpeed);
-        //AudioManager.instance.Play("RobotStartMoving");
+        //
 
         // rotate body
         if (m_move.magnitude > 0.1) 
@@ -57,14 +57,18 @@ public class RobotController : MonoBehaviour
 
             if (footstepsPlaying == false)
             {
-                AudioManager.instance.Play("RobotFootsteps", true);
+                AudioManager.instance.Play("RobotStartMoving");
+                AudioManager.instance.Play("RobotFootsteps");
+                
                 footstepsPlaying = true;
             }
 
         }
         if (m_move.magnitude < 0.1)
         {
+            AudioManager.instance.Pause("RobotFootsteps");
             footstepsPlaying = false;
+
         }
 
 
